@@ -58,7 +58,7 @@ class Controller:
         companies = sorted(self._model._graph.nodes, key=lambda x: x.OrganizationName)
         for c in companies:
             self._view._ddCompany.options.append(
-                ft.dropdown.Option(data=c.ID, text=f"{c.OrganizationName}", on_click=self.choiseCompany))
+                ft.dropdown.Option(data=c, text=f"{c.OrganizationName}", on_click=self.choiseCompany))
         countries = self._model.getCountry(self._selectedYear)
         for co in countries:
             self._view._ddCountry.options.append(
@@ -71,7 +71,17 @@ class Controller:
         self._view.update_page()
 
     def handleCercaSimili(self, e):
-        pass
+        if self._selectedCompany is None:
+            self._view.create_alert("Selezionare un'azienda!")
+            return
+
+        simili = self._model.getSimili(self._selectedCompany)
+        self._view.lstOutAnalisi.controls.clear()
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le aziende che operano nello stesso settore di {self._selectedCompany} sono:"))
+        for s in simili:
+            self._view.lstOutAnalisi.controls.append(ft.Text(f"{s[0]} con media dei profitti generati tra le imprese: {s[1]:.2f}B$."))
+
+        self._view.update_page()
 
     def handleVolumeVendite(self, e):
         pass

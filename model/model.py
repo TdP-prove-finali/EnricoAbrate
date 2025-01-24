@@ -22,6 +22,15 @@ class Model:
             e.peso = DAO.getPeso(e.company1.ID, e.company2.ID)
             self._graph.add_edge(e.company1, e.company2, weight=e.peso)
 
+    def getSimili(self, azienda):
+        result = []
+
+        for v in self._graph.neighbors(azienda):
+            if v.Industry == azienda.Industry:
+                result.append( (v.OrganizationName, self._graph[azienda][v]["weight"]) )
+
+        return sorted(result, key=lambda x: x[1], reverse=True)
+
     def getNumNodes(self):
         return len(self._graph.nodes)
 
