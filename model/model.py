@@ -74,6 +74,29 @@ class Model:
 
         return clusters
 
+    def getPercorso(self, valMercato):
+        self._bestPath = []
+        self._bestVal = 0
+
+        for n in self._graph.nodes:
+            if n.MarketValue > valMercato:
+                parziale = [n]
+                self.ricorsione(parziale, valMercato, 0)
+
+        return self._bestPath, self._bestVal
+
+    def ricorsione(self, parziale, valMercato, profittoAttuale):
+        if profittoAttuale > self._bestVal:
+            self._bestVal = profittoAttuale
+            self._bestPath = copy.deepcopy(parziale)
+
+        for node in self._graph.neighbors(parziale[-1]):
+            if node not in parziale and node.MarketValue > valMercato:
+                peso = self._graph[parziale[-1]][node]["weight"]
+                parziale.append(node)
+                self.ricorsione(parziale, valMercato, profittoAttuale+peso)
+                parziale.pop()
+
     def getNumNodes(self):
         return len(self._graph.nodes)
 

@@ -117,7 +117,7 @@ class Controller:
         miglioriClusters = clusters[:3]
 
         self._view.lstOutAnalisi.controls.clear()
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse."))
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse.", weight=ft.FontWeight.BOLD))
         self._view.lstOutAnalisi.controls.append(ft.Text(f"Le migliori sono:"))
         for i, (num, settore, reddito) in enumerate(miglioriClusters, 1):
             self._view.lstOutAnalisi.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
@@ -125,7 +125,22 @@ class Controller:
         self._view.update_page()
 
     def handleMassimizzaProfitti(self, e):
-        pass
+        try:
+            valMercato = int(self._view._txtMarketValue.value)
+        except ValueError:
+            self._view.create_alert("Inserire un numero intero!")
+            return
+
+        path, val = self._model.getPercorso(valMercato)
+
+        self._view.lstOutRicorsione.controls.clear()
+        self._view.lstOutRicorsione.controls.append(ft.Text(spans=[ft.TextSpan(f"Il percorso con profitti più alti ammonta a: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+                                                                   ft.TextSpan(f"{val:.2f}B$.", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
+        self._view.lstOutRicorsione.controls.append(ft.Text(f"E' attraversato da:"))
+        for i in range(0, len(path)-1):
+            self._view.lstOutRicorsione.controls.append(ft.Text(f"{path[i]} --> {path[i+1]}, peso: {self._model._graph[path[i]][path[i+1]]["weight"]}B$"))
+
+        self._view.update_page()
 
     def choiseYear(self, e):
         if e.control.data is None:
