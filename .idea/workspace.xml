@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Parte grafica e grafo" />
+    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="cerca simili">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,6 +41,11 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/enricoabrate/Tesi/Companies/database&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;PLAIN_TEXT&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
@@ -108,11 +117,20 @@
       <option name="project" value="LOCAL" />
       <updated>1737738513559</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="cerca simili">
+      <option name="closed" value="true" />
+      <created>1737743836532</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737743836532</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Parte grafica e grafo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parte grafica e grafo" />
+    <MESSAGE value="cerca simili" />
+    <option name="LAST_COMMIT_MESSAGE" value="cerca simili" />
   </component>
 </project>

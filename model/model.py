@@ -31,6 +31,26 @@ class Model:
 
         return sorted(result, key=lambda x: x[1], reverse=True)
 
+    def getVolumeAffari(self, stato, settore):
+        totStato = 0
+        totSettore = 0
+        arrStato = []
+        arrSettore = []
+
+        for c in self._graph.nodes:
+            if c.Industry == settore:
+                totSettore += c.Profits
+                arrSettore.append( (c.OrganizationName, c.Profits) )
+
+            if c.Country == stato:
+                totStato += c.Profits
+                arrStato.append( (c.OrganizationName, c.Profits) )
+
+        statiMagg = sorted(arrStato, key=lambda x: x[1], reverse=True)[:3]
+        settoriMagg = sorted(arrSettore, key=lambda x: x[1], reverse=True)[:3]
+
+        return totStato, totSettore, statiMagg, settoriMagg
+
     def getNumNodes(self):
         return len(self._graph.nodes)
 

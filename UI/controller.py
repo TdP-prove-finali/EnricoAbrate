@@ -77,14 +77,40 @@ class Controller:
 
         simili = self._model.getSimili(self._selectedCompany)
         self._view.lstOutAnalisi.controls.clear()
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le aziende che operano nello stesso settore di {self._selectedCompany} sono:"))
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le aziende che operano nello stesso settore di {self._selectedCompany} sono:", weight=ft.FontWeight.BOLD))
         for s in simili:
             self._view.lstOutAnalisi.controls.append(ft.Text(f"{s[0]} con media dei profitti generati tra le imprese: {s[1]:.2f}B$."))
 
         self._view.update_page()
 
     def handleVolumeVendite(self, e):
-        pass
+        if self._selectedIndustry is None:
+            self._view.create_alert("Selezionare un settore!")
+            return
+        if self._selectedCountry is None:
+            self._view.create_alert("Selezionare uno stato!")
+            return
+
+        totStato, totSettore, arrStato, arrSettore = self._model.getVolumeAffari(self._selectedCountry, self._selectedIndustry)
+
+        self._view.lstOutAnalisi.controls.clear()
+
+        self._view.lstOutAnalisi.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nello Stato {self._selectedCountry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+                                                                ft.TextSpan(f"{totStato:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
+        for st in arrStato:
+            self._view.lstOutAnalisi.controls.append(ft.Text(f"{st[0]} con {st[1]}B$"))
+
+        self._view.lstOutAnalisi.controls.append(ft.Text(f""))
+
+        self._view.lstOutAnalisi.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nel settore {self._selectedIndustry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+                                                                ft.TextSpan(f"{totSettore:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
+
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
+        for se in arrSettore:
+            self._view.lstOutAnalisi.controls.append(ft.Text(f"{se[0]} con {se[1]}B$"))
+
+        self._view.update_page()
 
     def handleComponenteConnessa(self, e):
         pass
