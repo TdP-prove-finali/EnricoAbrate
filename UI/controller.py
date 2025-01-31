@@ -113,7 +113,16 @@ class Controller:
         self._view.update_page()
 
     def handleComponenteConnessa(self, e):
-        pass
+        clusters = self._model.trovaCluster()
+        miglioriClusters = clusters[:3]
+
+        self._view.lstOutAnalisi.controls.clear()
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse."))
+        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le migliori sono:"))
+        for i, (num, settore, reddito) in enumerate(miglioriClusters, 1):
+            self._view.lstOutAnalisi.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
+
+        self._view.update_page()
 
     def handleMassimizzaProfitti(self, e):
         pass

@@ -1,6 +1,7 @@
 import copy
 import networkx as nx
 from database.DAO import DAO
+from collections import Counter
 
 
 class Model:
@@ -50,6 +51,28 @@ class Model:
         settoriMagg = sorted(arrSettore, key=lambda x: x[1], reverse=True)[:3]
 
         return totStato, totSettore, statiMagg, settoriMagg
+
+    def trovaCluster(self):
+        componenti = list(nx.connected_components(self._graph))
+
+        clusters = []
+
+        for comp in componenti:
+            numAziende = len(comp)
+            settori = []
+            redditoTot = 0
+
+            for node in comp:
+                settori.append(node.Industry)
+                redditoTot += node.Profits
+
+            settorePiuFrequente = Counter(settori).most_common(1)[0][0]
+
+            clusters.append((numAziende, settorePiuFrequente, redditoTot))
+
+        clusters.sort(key=lambda x: x[0], reverse=True)
+
+        return clusters
 
     def getNumNodes(self):
         return len(self._graph.nodes)
