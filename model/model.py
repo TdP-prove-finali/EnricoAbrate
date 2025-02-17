@@ -25,12 +25,31 @@ class Model:
 
     def getSimili(self, azienda):
         result = []
+        company = next(c for c in self._graph.nodes if c == azienda)
+        settore = company.Industry
 
         for v in self._graph.neighbors(azienda):
             if v.Industry == azienda.Industry:
                 result.append( (v.OrganizationName, self._graph[azienda][v]["weight"]) )
 
-        return sorted(result, key=lambda x: x[1], reverse=True)
+        return settore, sorted(result, key=lambda x: x[1], reverse=True)
+
+    def calcolaROI(self, azienda):
+        result = []
+
+        company = next(c for c in self._graph.nodes if c == azienda)
+        settore = company.Industry
+        profitti = company.Profits
+        assets = company.Assets
+
+        ROIazienda = (profitti/assets) * 100
+
+        for c in self._graph.nodes:
+            if c.Industry == company.Industry:
+                ROIcalcolato = (c.Profits/c.Assets)*100
+                result.append( (c.OrganizationName, ROIcalcolato) )
+
+        return settore, ROIazienda, result
 
     def getVolumeAffari(self, stato, settore):
         totStato = 0

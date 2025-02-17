@@ -38,8 +38,10 @@ class Controller:
         self._view.lstOutGraph.controls.append(ft.Text(f"Trovate {self._model.getNumNodes()} aziende fondate dopo il {self._selectedYear}, le quali si collegano tra loro tramite {self._model.getNumEdges()} archi."))
 
         # SBLOCCARE TUTTI GLI OGGETTI NELLA VIEW
+        self._view.tabs.visible = True
         self._view._ddCompany.disabled = False
         self._view._btnCercaSimili.disabled = False
+        self._view._btnCalcolaROI.disabled = False
         self._view._ddCountry.disabled = False
         self._view._ddIndustry.disabled = False
         self._view._btnVolumeVendite.disabled = False
@@ -75,12 +77,35 @@ class Controller:
             self._view.create_alert("Selezionare un'azienda!")
             return
 
-        simili = self._model.getSimili(self._selectedCompany)
-        self._view.lstOutAnalisi.controls.clear()
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le aziende che operano nello stesso settore di {self._selectedCompany} sono:", weight=ft.FontWeight.BOLD))
-        for s in simili:
-            self._view.lstOutAnalisi.controls.append(ft.Text(f"{s[0]} con media dei profitti generati tra le imprese: {s[1]:.2f}B$."))
+        settore, simili = self._model.getSimili(self._selectedCompany)
 
+        self._view.lstOutSingolaAzienda.controls.clear()
+        self._view.lstOutSingolaAzienda.controls.append(
+            ft.Text(f"Le aziende che operano nello stesso settore di {self._selectedCompany} ({settore}) sono:", weight=ft.FontWeight.BOLD))
+        for s in simili:
+            self._view.lstOutSingolaAzienda.controls.append(
+                ft.Text(f"{s[0]} con media dei profitti generati tra le imprese: {s[1]:.2f}B$."))
+
+        self._view.update_page()
+
+    def handleCalcolaROI(self, e):
+        if self._selectedCompany is None:
+            self._view.create_alert("Selezionare un'azienda!")
+            return
+
+        settore, roiAzienda, altreAziende = self._model.calcolaROI(self._selectedCompany)
+
+        self._view.lstOutSingolaAzienda.controls.clear()
+        self._view.lstOutSingolaAzienda.controls.append(ft.Text(spans=[ft.TextSpan(f"Il ROI dell'azienda "),
+                                                                       ft.TextSpan(f"{self._selectedCompany} ", style=ft.TextStyle(weight=ft.FontWeight.BOLD) ),
+                                                                       ft.TextSpan(f"ammonta a "),
+                                                                       ft.TextSpan(f"{roiAzienda:.2f}%.", style=ft.TextStyle(weight=ft.FontWeight.BOLD) )]))
+        self._view.lstOutSingolaAzienda.controls.append(ft.Text(f"Il ROI delle altre aziende competenti nello stesso settore ({settore}):"))
+        for a in altreAziende:
+            self._view.lstOutSingolaAzienda.controls.append(ft.Text(spans=[ft.TextSpan(f"Azienda: "),
+                                                                           ft.TextSpan(f"{a[0]}, ",style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+                                                                           ft.TextSpan(f"ROI totalizzato: "),
+                                                                           ft.TextSpan(f"{a[1]:.2f}%.",style=ft.TextStyle(weight=ft.FontWeight.BOLD))]))
         self._view.update_page()
 
     def handleVolumeVendite(self, e):
@@ -93,22 +118,22 @@ class Controller:
 
         totStato, totSettore, arrStato, arrSettore = self._model.getVolumeAffari(self._selectedCountry, self._selectedIndustry)
 
-        self._view.lstOutAnalisi.controls.clear()
+        self._view.lstOutTutteAziende.controls.clear()
 
-        self._view.lstOutAnalisi.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nello Stato {self._selectedCountry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+        self._view.lstOutTutteAziende.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nello Stato {self._selectedCountry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
                                                                 ft.TextSpan(f"{totStato:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
         for st in arrStato:
-            self._view.lstOutAnalisi.controls.append(ft.Text(f"{st[0]} con {st[1]}B$"))
+            self._view.lstOutTutteAziende.controls.append(ft.Text(f"{st[0]} con {st[1]}B$"))
 
-        self._view.lstOutAnalisi.controls.append(ft.Text(f""))
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f""))
 
-        self._view.lstOutAnalisi.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nel settore {self._selectedIndustry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
+        self._view.lstOutTutteAziende.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nel settore {self._selectedIndustry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
                                                                 ft.TextSpan(f"{totSettore:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
 
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
         for se in arrSettore:
-            self._view.lstOutAnalisi.controls.append(ft.Text(f"{se[0]} con {se[1]}B$"))
+            self._view.lstOutTutteAziende.controls.append(ft.Text(f"{se[0]} con {se[1]}B$"))
 
         self._view.update_page()
 
@@ -116,11 +141,11 @@ class Controller:
         clusters = self._model.trovaCluster()
         miglioriClusters = clusters[:3]
 
-        self._view.lstOutAnalisi.controls.clear()
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse.", weight=ft.FontWeight.BOLD))
-        self._view.lstOutAnalisi.controls.append(ft.Text(f"Le migliori sono:"))
+        self._view.lstOutTutteAziende.controls.clear()
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse.", weight=ft.FontWeight.BOLD))
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le migliori sono:"))
         for i, (num, settore, reddito) in enumerate(miglioriClusters, 1):
-            self._view.lstOutAnalisi.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
+            self._view.lstOutTutteAziende.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
 
         self._view.update_page()
 
