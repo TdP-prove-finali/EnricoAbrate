@@ -2,6 +2,7 @@ import copy
 import networkx as nx
 from database.DAO import DAO
 from collections import Counter
+import matplotlib.pyplot as plt
 
 
 class Model:
@@ -49,7 +50,36 @@ class Model:
                 ROIcalcolato = (c.Profits/c.Assets)*100
                 result.append( (c.OrganizationName, ROIcalcolato) )
 
+        result = sorted(result, key=lambda x: x[1], reverse=True)
+
+        # Genero il grafico prima di fare return, con i valori ricavati
+        self.generaGraficoROI(azienda, settore, ROIazienda, result)
+
         return settore, ROIazienda, result
+
+    def generaGraficoROI(self, azienda, settore, roiAzienda, altreAziende):
+        # Ordina le aziende per ROI in ordine decrescente
+        aziende = [a[0] for a in altreAziende]
+        rois = [a[1] for a in altreAziende]
+
+        # Aggiungi l'azienda selezionata
+        aziende.insert(0, azienda)
+        rois.insert(0, roiAzienda)
+
+        # Colore differenziato per l'azienda selezionata
+        colori = ['red'] + ['blue'] * (len(rois) - 1)
+
+        # Crea il grafico a barre orizzontali
+        plt.figure(figsize=(10, 6))
+        plt.barh(aziende, rois, color=colori)
+        plt.xlabel('ROI (%)')
+        plt.title(f'Confronto ROI nel settore: {settore}')
+        plt.grid(axis='x', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+
+        # Salva il grafico come immagine
+        plt.savefig("grafico_roi.png")
+        plt.close()
 
     def getVolumeAffari(self, stato, settore):
         totStato = 0
@@ -66,8 +96,8 @@ class Model:
                 totStato += c.Profits
                 arrStato.append( (c.OrganizationName, c.Profits) )
 
-        statiMagg = sorted(arrStato, key=lambda x: x[1], reverse=True)[:3]
-        settoriMagg = sorted(arrSettore, key=lambda x: x[1], reverse=True)[:3]
+        statiMagg = sorted(arrStato, key=lambda x: x[1], reverse=True)
+        settoriMagg = sorted(arrSettore, key=lambda x: x[1], reverse=True)
 
         return totStato, totSettore, statiMagg, settoriMagg
 

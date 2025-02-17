@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Ricorsione massimizza profitti">
+    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Database usato">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738357853796</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Modifica dell'interfaccia, aggiunta pulsante ROI">
+      <option name="closed" value="true" />
+      <created>1739819606418</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1739819606418</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -166,6 +176,8 @@
     <MESSAGE value="Componenti connesse" />
     <MESSAGE value="Componenti connesse grafo" />
     <MESSAGE value="Ricorsione massimizza profitti" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ricorsione massimizza profitti" />
+    <MESSAGE value="Modifica dell'interfaccia, aggiunta pulsante ROI" />
+    <MESSAGE value="Database usato" />
+    <option name="LAST_COMMIT_MESSAGE" value="Database usato" />
   </component>
 </project>

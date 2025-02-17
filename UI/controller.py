@@ -100,6 +100,10 @@ class Controller:
                                                                        ft.TextSpan(f"{self._selectedCompany} ", style=ft.TextStyle(weight=ft.FontWeight.BOLD) ),
                                                                        ft.TextSpan(f"ammonta a "),
                                                                        ft.TextSpan(f"{roiAzienda:.2f}%.", style=ft.TextStyle(weight=ft.FontWeight.BOLD) )]))
+        # Visualizzazione grafico per il ROI
+        self._view.lstOutSingolaAzienda.controls.append(ft.Text("Confronto grafico del ROI:"))
+        self._view.lstOutSingolaAzienda.controls.append(ft.Image(src="grafico_roi.png", width=700, height=500))
+        # Visualizzazione scritta di tutte le aziende
         self._view.lstOutSingolaAzienda.controls.append(ft.Text(f"Il ROI delle altre aziende competenti nello stesso settore ({settore}):"))
         for a in altreAziende:
             self._view.lstOutSingolaAzienda.controls.append(ft.Text(spans=[ft.TextSpan(f"Azienda: "),
@@ -121,7 +125,7 @@ class Controller:
         self._view.lstOutTutteAziende.controls.clear()
 
         self._view.lstOutTutteAziende.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nello Stato {self._selectedCountry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
-                                                                ft.TextSpan(f"{totStato:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
+                                                                     ft.TextSpan(f"{totStato:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
         self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
         for st in arrStato:
             self._view.lstOutTutteAziende.controls.append(ft.Text(f"{st[0]} con {st[1]}B$"))
@@ -129,7 +133,7 @@ class Controller:
         self._view.lstOutTutteAziende.controls.append(ft.Text(f""))
 
         self._view.lstOutTutteAziende.controls.append(ft.Text(spans=[ft.TextSpan(f"I profitti totali generati dalle imprese nel settore {self._selectedIndustry} sono: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
-                                                                ft.TextSpan(f"{totSettore:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
+                                                                     ft.TextSpan(f"{totSettore:.2f}B$", style=ft.TextStyle(weight=ft.FontWeight.BOLD, color="green"))]))
 
         self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le imprese che maggiormente influiscono sono:"))
         for se in arrSettore:

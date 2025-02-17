@@ -23,8 +23,7 @@ class View(ft.UserControl):
         # Dropdown Anno Fondazione e Numero Minimo di Impiegati
         self._ddYear = ft.Dropdown(label='Anno fondazione', width=200)
         self._txtNumEmployee = ft.TextField(label='Numero impiegati min', width=200)
-        self._btnBuildGraph = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handleBuildGraph,
-                                                width=200)
+        self._btnBuildGraph = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handleBuildGraph,width=200)
 
         row1 = ft.Row([self._ddYear, self._txtNumEmployee, self._btnBuildGraph], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
@@ -39,10 +38,8 @@ class View(ft.UserControl):
 
         # Tab 1: Singola Azienda
         self._ddCompany = ft.Dropdown(label='Azienda', width=320, disabled=True)
-        self._btnCercaSimili = ft.ElevatedButton(text="Cerca Simili", on_click=self._controller.handleCercaSimili,
-                                                 width=200, disabled=True)
-        self._btnCalcolaROI = ft.ElevatedButton(text="Calcola ROI", on_click=self._controller.handleCalcolaROI,
-                                                width=200, disabled=True)
+        self._btnCercaSimili = ft.ElevatedButton(text="Cerca Simili", on_click=self._controller.handleCercaSimili,width=200, disabled=True)
+        self._btnCalcolaROI = ft.ElevatedButton(text="Calcola ROI", on_click=self._controller.handleCalcolaROI,width=200, disabled=True)
 
         # List View per output della parte di analisi della singola azienda
         self.lstOutSingolaAzienda = ft.ListView(expand=1, spacing=10, padding=20, height=400, auto_scroll=True)
@@ -66,7 +63,7 @@ class View(ft.UserControl):
                                                         disabled=True)
 
         # List View per output della parte di analisi di tutte le aziende
-        self.lstOutTutteAziende = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self.lstOutTutteAziende = ft.ListView(expand=1, spacing=10, padding=20, height=400, auto_scroll=False)
 
         tab2 = ft.Column([
             ft.Row([ft.Text("Analisi su tutte le aziende", size=20, color="blue")],
@@ -84,7 +81,7 @@ class View(ft.UserControl):
                                                         disabled=True)
 
         # List View per output della parte di ricorsione
-        self.lstOutRicorsione = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
+        self.lstOutRicorsione = ft.ListView(expand=1, spacing=10, padding=20, height=400, auto_scroll=False)
 
         tab3 = ft.Column([
             ft.Row([ft.Text("Ricerca Ricorsiva", size=20, color="blue")], alignment=ft.MainAxisAlignment.CENTER),
