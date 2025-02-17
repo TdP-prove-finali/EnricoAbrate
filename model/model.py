@@ -1,8 +1,9 @@
 import copy
 import networkx as nx
+from pygments.lexers import go as go_lexer
+import plotly.graph_objects as go
 from database.DAO import DAO
 from collections import Counter
-import matplotlib.pyplot as plt
 
 
 class Model:
@@ -58,28 +59,34 @@ class Model:
         return settore, ROIazienda, result
 
     def generaGraficoROI(self, azienda, settore, roiAzienda, altreAziende):
-        # Ordina le aziende per ROI in ordine decrescente
-        aziende = [a[0] for a in altreAziende]
-        rois = [a[1] for a in altreAziende]
+        # Mostra solo le prime 10 aziende per evitare sovraccarico
+        top_n = 10
+        altreAziende = altreAziende[:top_n]
 
         # Aggiungi l'azienda selezionata
-        aziende.insert(0, azienda)
-        rois.insert(0, roiAzienda)
+        aziende = [azienda] + [a[0] for a in altreAziende]
+        rois = [roiAzienda] + [a[1] for a in altreAziende]
 
         # Colore differenziato per l'azienda selezionata
         colori = ['red'] + ['blue'] * (len(rois) - 1)
 
-        # Crea il grafico a barre orizzontali
-        plt.figure(figsize=(10, 6))
-        plt.barh(aziende, rois, color=colori)
-        plt.xlabel('ROI (%)')
-        plt.title(f'Confronto ROI nel settore: {settore}')
-        plt.grid(axis='x', linestyle='--', alpha=0.7)
-        plt.tight_layout()
+        # Crea il grafico a barre orizzontali con Plotly
+        fig = go.Figure(go.Bar(
+            x=rois,
+            y=aziende,
+            orientation='h',
+            marker=dict(color=colori)
+        ))
 
-        # Salva il grafico come immagine
-        plt.savefig("grafico_roi.png")
-        plt.close()
+        fig.update_layout(
+            title=f'Confronto ROI nel settore: {settore}',
+            xaxis_title='ROI (%)',
+            yaxis_title='Aziende',
+            showlegend=False
+        )
+
+        # Salva il grafico come immagine PNG
+        fig.write_image("grafici/grafico_roi.png")
 
     def getVolumeAffari(self, stato, settore):
         totStato = 0

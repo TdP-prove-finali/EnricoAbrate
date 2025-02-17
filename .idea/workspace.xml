@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Database usato">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.py" afterDir="false" />
-    </list>
+    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Grafico ROI" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739819606418</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Grafico ROI">
+      <option name="closed" value="true" />
+      <created>1739829135860</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1739829135860</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -178,6 +181,7 @@
     <MESSAGE value="Ricorsione massimizza profitti" />
     <MESSAGE value="Modifica dell'interfaccia, aggiunta pulsante ROI" />
     <MESSAGE value="Database usato" />
-    <option name="LAST_COMMIT_MESSAGE" value="Database usato" />
+    <MESSAGE value="Grafico ROI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Grafico ROI" />
   </component>
 </project>

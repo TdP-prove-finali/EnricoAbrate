@@ -102,7 +102,7 @@ class Controller:
                                                                        ft.TextSpan(f"{roiAzienda:.2f}%.", style=ft.TextStyle(weight=ft.FontWeight.BOLD) )]))
         # Visualizzazione grafico per il ROI
         self._view.lstOutSingolaAzienda.controls.append(ft.Text("Confronto grafico del ROI:"))
-        self._view.lstOutSingolaAzienda.controls.append(ft.Image(src="grafico_roi.png", width=700, height=500))
+        self._view.lstOutSingolaAzienda.controls.append(ft.Image(src="grafici/grafico_roi.png", width=800, height=600))
         # Visualizzazione scritta di tutte le aziende
         self._view.lstOutSingolaAzienda.controls.append(ft.Text(f"Il ROI delle altre aziende competenti nello stesso settore ({settore}):"))
         for a in altreAziende:
