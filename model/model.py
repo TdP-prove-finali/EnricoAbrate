@@ -89,6 +89,7 @@ class Model:
         fig.write_image("grafici/grafico_roi.png")
 
     def getVolumeAffari(self, stato, settore):
+        # Somma dei profitti generati per le imprese differenziati per stato e settore
         totStato = 0
         totSettore = 0
         arrStato = []
