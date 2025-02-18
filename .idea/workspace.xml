@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Grafico ROI nuovo">
-      <change afterPath="$PROJECT_DIR$/database/companies_db.sql" afterDir="false" />
+    <list default="true" id="0815153d-69f6-436f-b0fa-b779305bebf2" name="Changes" comment="Grafico ROI nuovo e database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739831212149</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Grafico ROI nuovo e database">
+      <option name="closed" value="true" />
+      <created>1739893835965</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1739893835965</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -205,6 +210,7 @@
     <MESSAGE value="Database usato" />
     <MESSAGE value="Grafico ROI" />
     <MESSAGE value="Grafico ROI nuovo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Grafico ROI nuovo" />
+    <MESSAGE value="Grafico ROI nuovo e database" />
+    <option name="LAST_COMMIT_MESSAGE" value="Grafico ROI nuovo e database" />
   </component>
 </project>

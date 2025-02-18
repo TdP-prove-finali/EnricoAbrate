@@ -33,7 +33,10 @@ class Controller:
             self._view.create_alert("Selezionare un anno!")
             return
 
+        start_time = time.time()
         self._model.buildGraph(int(self._selectedYear), numEmployee)
+        end_time = time.time()
+        print(f"Tempo creazione grafo: {(end_time - start_time):2f} secondi")
 
         self._view.lstOutGraph.controls.clear()
         self._view.lstOutGraph.controls.append(ft.Text(f"Trovate {self._model.getNumNodes()} aziende fondate dopo il {self._selectedYear}, le quali si collegano tra loro tramite {self._model.getNumEdges()} archi."))
@@ -114,7 +117,7 @@ class Controller:
                                                                            ft.TextSpan(f"{a[1]:.2f}%.",style=ft.TextStyle(weight=ft.FontWeight.BOLD))]))
         self._view.update_page()
 
-        time.sleep(1)  # Aspetta 1 secondo per far caricare l'immagine
+        time.sleep(2)  # Aspetta 2 secondi per far caricare l'immagine
         os.remove(percorso_file)    # Elimino l'immagine in modo tale da non doverla salvare. La uso solo per visualizzare
 
     def handleVolumeVendite(self, e):

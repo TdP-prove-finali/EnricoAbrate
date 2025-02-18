@@ -90,43 +90,24 @@ class DAO:
         return result
 
     @staticmethod
-    def getEdges(year, numEmployee, idMap):
+    def getAllWeights(year, numEmployee):
         conn = DBConnect.get_connection()
 
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """ SELECT c.ID AS idCompany1 , c2.ID as idCompany2
-                    FROM companies c, companies c2 
-                    WHERE c.ID > c2.ID
-                        AND c.YearFounded > %s AND c2.YearFounded > %s
-                        AND ABS(c.YearFounded - c2.YearFounded) < 3
+        query = """ SELECT c.ID AS idCompany1, c2.ID AS idCompany2, ROUND(AVG((c.Profits + c2.Profits)/2), 2) as Peso
+                    FROM companies c
+                    JOIN companies c2 ON c.ID > c2.ID
+                    WHERE c.YearFounded > %s AND c2.YearFounded > %s
+                        AND ABS(c.YearFounded - c2.YearFounded) <= 10
                         AND c.Country = c2.Country
-                        AND c.TotalEmployees > %s AND c2.TotalEmployees > %s   """
+                        AND c.TotalEmployees > %s AND c2.TotalEmployees > %s
+                    GROUP BY c.ID, c2.ID   """
 
         cursor.execute(query, (year, year, numEmployee, numEmployee))
         for row in cursor:
-            result.append(Connessa(idMap[row["idCompany1"]], idMap[row["idCompany2"]], 0))
-
-        cursor.close()
-        conn.close()
-
-        return result
-
-    @staticmethod
-    def getPeso(id1, id2):
-        conn = DBConnect.get_connection()
-
-        result = 0
-
-        cursor = conn.cursor(dictionary=True)
-        query = """ SELECT ROUND(AVG((c.Profits + c2.Profits)/2), 2) as Peso
-                    FROM companies c, companies c2 
-                    WHERE c.ID = %s AND c2.ID = %s   """
-
-        cursor.execute(query, (id1, id2))
-        for row in cursor:
-            result = row["Peso"]
+            result.append((row["idCompany1"], row["idCompany2"], row["Peso"]))
 
         cursor.close()
         conn.close()

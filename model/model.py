@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from database.DAO import DAO
 from collections import Counter
+import time
 
 
 class Model:
@@ -22,10 +23,9 @@ class Model:
         for c in companies:
             self._idMap[c.ID] = c
 
-        edges = DAO.getEdges(year, numEmployee, self._idMap)
-        for e in edges:
-            e.peso = DAO.getPeso(e.company1.ID, e.company2.ID)
-            self._graph.add_edge(e.company1, e.company2, weight=e.peso)
+        pesi = DAO.getAllWeights(year, numEmployee)
+        for id1, id2, peso in pesi:
+            self._graph.add_edge(self._idMap[id1], self._idMap[id2], weight=peso)
 
     def getSimili(self, azienda):
         result = []
@@ -135,15 +135,23 @@ class Model:
     def getPercorso(self, valMercato):
         self._bestPath = []
         self._bestVal = 0
+        self._memo = {}
+        minPeso = 10  # Peso minimo dell'arco per considerarlo
 
         for n in self._graph.nodes:
             if n.MarketValue > valMercato:
                 parziale = [n]
-                self.ricorsione(parziale, valMercato, 0)
+                self.ricorsione(parziale, valMercato, 0, minPeso)
 
         return self._bestPath, self._bestVal
 
-    def ricorsione(self, parziale, valMercato, profittoAttuale):
+    def ricorsione(self, parziale, valMercato, profittoAttuale, minPeso):
+        chiaveMemo = (parziale[-1], frozenset(parziale))
+        if chiaveMemo in self._memo and self._memo[chiaveMemo] >= profittoAttuale:
+            return
+        self._memo[chiaveMemo] = profittoAttuale
+
+        # Aggiorna il miglior percorso trovato
         if profittoAttuale > self._bestVal:
             self._bestVal = profittoAttuale
             self._bestPath = copy.deepcopy(parziale)
@@ -151,8 +159,18 @@ class Model:
         for node in self._graph.neighbors(parziale[-1]):
             if node not in parziale and node.MarketValue > valMercato:
                 peso = self._graph[parziale[-1]][node]["weight"]
+
+                if peso < minPeso:
+                    continue
+
+                max_profitto = profittoAttuale + peso + sum(
+                    [self._graph[parziale[-1]][n]["weight"] for n in self._graph.neighbors(parziale[-1])]
+                )
+                if max_profitto <= self._bestVal:
+                    continue
+
                 parziale.append(node)
-                self.ricorsione(parziale, valMercato, profittoAttuale+peso)
+                self.ricorsione(parziale, valMercato, profittoAttuale + peso, minPeso)
                 parziale.pop()
 
     def getNumNodes(self):
