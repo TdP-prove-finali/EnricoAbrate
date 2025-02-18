@@ -1,7 +1,9 @@
 import copy
 import networkx as nx
-from pygments.lexers import go as go_lexer
-import plotly.graph_objects as go
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import pandas as pd
 from database.DAO import DAO
 from collections import Counter
 
@@ -59,34 +61,33 @@ class Model:
         return settore, ROIazienda, result
 
     def generaGraficoROI(self, azienda, settore, roiAzienda, altreAziende):
-        # Mostra solo le prime 10 aziende per evitare sovraccarico
+        # Limita a 10 aziende per evitare sovraccarico
         top_n = 10
         altreAziende = altreAziende[:top_n]
 
-        # Aggiungi l'azienda selezionata
-        aziende = [azienda] + [a[0] for a in altreAziende]
-        rois = [roiAzienda] + [a[1] for a in altreAziende]
+        # Crea una lista di dizionari con i dati necessari
+        dati = [{'Azienda': azienda.OrganizationName, 'ROI': roiAzienda, 'Colore': 'red'}]
+        for a in altreAziende:
+            if a[0] != azienda.OrganizationName:
+                dati.append({'Azienda': a[0], 'ROI': a[1], 'Colore': 'blue'})
 
-        # Colore differenziato per l'azienda selezionata
-        colori = ['red'] + ['blue'] * (len(rois) - 1)
+        # Crea un DataFrame con Pandas
+        df = pd.DataFrame(dati)
 
-        # Crea il grafico a barre orizzontali con Plotly
-        fig = go.Figure(go.Bar(
-            x=rois,
-            y=aziende,
-            orientation='h',
-            marker=dict(color=colori)
-        ))
+        # Ordina per ROI decrescente
+        df = df.sort_values(by='ROI', ascending=True)
 
-        fig.update_layout(
-            title=f'Confronto ROI nel settore: {settore}',
-            xaxis_title='ROI (%)',
-            yaxis_title='Aziende',
-            showlegend=False
-        )
+        # Crea il grafico a barre orizzontali con Matplotlib
+        plt.figure(figsize=(10, 6))
+        plt.barh(df['Azienda'], df['ROI'], color=df['Colore'])
+        plt.xlabel('ROI (%)')
+        plt.title(f'Confronto ROI nel settore: {settore}')
+        plt.grid(axis='x', linestyle='--', alpha=0.7)
+        plt.tight_layout()
 
         # Salva il grafico come immagine PNG
-        fig.write_image("grafici/grafico_roi.png")
+        plt.savefig("grafici/grafico_roi.png")
+        plt.close()
 
     def getVolumeAffari(self, stato, settore):
         # Somma dei profitti generati per le imprese differenziati per stato e settore

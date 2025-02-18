@@ -42,7 +42,7 @@ class View(ft.UserControl):
         self._btnCalcolaROI = ft.ElevatedButton(text="Calcola ROI", on_click=self._controller.handleCalcolaROI,width=200, disabled=True)
 
         # List View per output della parte di analisi della singola azienda
-        self.lstOutSingolaAzienda = ft.ListView(expand=1, spacing=10, padding=20, height=400, auto_scroll=True)
+        self.lstOutSingolaAzienda = ft.ListView(expand=1, spacing=10, padding=20, height=400, auto_scroll=False)
 
         tab1 = ft.Column([
             ft.Row([ft.Text("Analisi di una singola azienda", size=20, color="blue")],

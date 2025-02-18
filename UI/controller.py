@@ -1,5 +1,6 @@
 import flet as ft
-
+import os
+import time
 
 class Controller:
     def __init__(self, view, model):
@@ -101,8 +102,9 @@ class Controller:
                                                                        ft.TextSpan(f"ammonta a "),
                                                                        ft.TextSpan(f"{roiAzienda:.2f}%.", style=ft.TextStyle(weight=ft.FontWeight.BOLD) )]))
         # Visualizzazione grafico per il ROI
+        percorso_file = os.path.abspath("grafici/grafico_roi.png")
         self._view.lstOutSingolaAzienda.controls.append(ft.Text("Confronto grafico del ROI:"))
-        self._view.lstOutSingolaAzienda.controls.append(ft.Image(src="grafici/grafico_roi.png", width=800, height=600))
+        self._view.lstOutSingolaAzienda.controls.append(ft.Image(src=percorso_file, width=500, height=375))
         # Visualizzazione scritta di tutte le aziende
         self._view.lstOutSingolaAzienda.controls.append(ft.Text(f"Il ROI delle altre aziende competenti nello stesso settore ({settore}):"))
         for a in altreAziende:
@@ -111,6 +113,9 @@ class Controller:
                                                                            ft.TextSpan(f"ROI totalizzato: "),
                                                                            ft.TextSpan(f"{a[1]:.2f}%.",style=ft.TextStyle(weight=ft.FontWeight.BOLD))]))
         self._view.update_page()
+
+        time.sleep(1)  # Aspetta 1 secondo per far caricare l'immagine
+        os.remove(percorso_file)    # Elimino l'immagine in modo tale da non doverla salvare. La uso solo per visualizzare
 
     def handleVolumeVendite(self, e):
         if self._selectedIndustry is None:
