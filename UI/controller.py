@@ -81,7 +81,11 @@ class Controller:
             self._view.create_alert("Selezionare un'azienda!")
             return
 
+        start_time = time.time()
         settore, simili = self._model.getSimili(self._selectedCompany)
+        end_time = time.time()
+        print(f"Tempo creca simili: {(end_time - start_time):2f} secondi")
+        print(f"Numero simili: {len(simili)}")
 
         self._view.lstOutSingolaAzienda.controls.clear()
         self._view.lstOutSingolaAzienda.controls.append(
@@ -96,8 +100,10 @@ class Controller:
         if self._selectedCompany is None:
             self._view.create_alert("Selezionare un'azienda!")
             return
-
+        start_time = time.time()
         settore, roiAzienda, altreAziende = self._model.calcolaROI(self._selectedCompany)
+        end_time = time.time()
+        print(f"Tempo caloclo ROI: {(end_time - start_time):2f} secondi")
 
         self._view.lstOutSingolaAzienda.controls.clear()
         self._view.lstOutSingolaAzienda.controls.append(ft.Text(spans=[ft.TextSpan(f"Il ROI dell'azienda "),
@@ -128,7 +134,10 @@ class Controller:
             self._view.create_alert("Selezionare uno stato!")
             return
 
+        start_time = time.time()
         totStato, totSettore, arrStato, arrSettore = self._model.getVolumeAffari(self._selectedCountry, self._selectedIndustry)
+        end_time = time.time()
+        print(f"Tempo calcolo volume vendita: {(end_time - start_time):2f} secondi")
 
         self._view.lstOutTutteAziende.controls.clear()
 
@@ -150,14 +159,16 @@ class Controller:
         self._view.update_page()
 
     def handleComponenteConnessa(self, e):
+        start_time = time.time()
         clusters = self._model.trovaCluster()
-        miglioriClusters = clusters[:3]
+        end_time = time.time()
+        print(f"Tempo creazione componente connessa: {(end_time - start_time):2f} secondi")
 
         self._view.lstOutTutteAziende.controls.clear()
         self._view.lstOutTutteAziende.controls.append(ft.Text(f"Sono state trovate {len(clusters)} componenti connesse.", weight=ft.FontWeight.BOLD))
-        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Le migliori sono:"))
-        for i, (num, settore, reddito) in enumerate(miglioriClusters, 1):
-            self._view.lstOutTutteAziende.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
+        self._view.lstOutTutteAziende.controls.append(ft.Text(f"Queste sono:"))
+        for i, (num, settore, reddito, stato) in enumerate(clusters, 1):
+            self._view.lstOutTutteAziende.controls.append(ft.Text(f"{i}. Cluster con {num} aziende, nello stato: {stato}, settore dominante: {settore}, reddito totale: {reddito:.2f}B$"))
 
         self._view.update_page()
 
@@ -168,7 +179,11 @@ class Controller:
             self._view.create_alert("Inserire un numero intero!")
             return
 
+        start_time = time.time()
         path, val = self._model.getPercorso(valMercato)
+        end_time = time.time()
+        print(f"Tempo esecuzione ricorsione: {(end_time - start_time):2f} secondi")
+        print(f"Nodi attraversati: {len(path)}")
 
         self._view.lstOutRicorsione.controls.clear()
         self._view.lstOutRicorsione.controls.append(ft.Text(spans=[ft.TextSpan(f"Il percorso con profitti più alti ammonta a: ", style=ft.TextStyle(weight=ft.FontWeight.BOLD)),
@@ -184,25 +199,21 @@ class Controller:
             self._selectedYear = None
         else:
             self._selectedYear = e.control.data
-            print(self._selectedYear)
 
     def choiseCompany(self, e):
         if e.control.data is None:
             self._selectedCompany = None
         else:
             self._selectedCompany = e.control.data
-            print(self._selectedCompany)
 
     def choiseCountry(self, e):
         if e.control.data is None:
             self._selectedCountry = None
         else:
             self._selectedCountry = e.control.data
-            print(self._selectedCountry)
 
     def choiseIndustry(self, e):
         if e.control.data is None:
             self._selectedIndustry = None
         else:
             self._selectedIndustry = e.control.data
-            print(self._selectedIndustry)

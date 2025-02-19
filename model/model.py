@@ -120,13 +120,15 @@ class Model:
             settori = []
             redditoTot = 0
 
+            stato = next(iter(comp)).Country
+
             for node in comp:
                 settori.append(node.Industry)
                 redditoTot += node.Profits
 
             settorePiuFrequente = Counter(settori).most_common(1)[0][0]
 
-            clusters.append((numAziende, settorePiuFrequente, redditoTot))
+            clusters.append((numAziende, settorePiuFrequente, redditoTot, stato))
 
         clusters.sort(key=lambda x: x[0], reverse=True)
 
